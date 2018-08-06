@@ -44,7 +44,7 @@ def instrument(input, output):
     
     for line in input:
         if not skip_intel and not skip_app and not skip_csect and instr_ok and instrument_next and line[0] == '\t' and str.isalpha(line[1]):
-            trace_jump(output, is64)
+            trace_jump(output)
             ins_lines += 1
             instrument_next = False
 
@@ -81,7 +81,7 @@ def instrument(input, output):
         
         if line[0] == '\t':
             if line[1] == 'j' and line[2] != 'm':
-                trace_jump(output, is64)
+                trace_jump(output)
                 ins_lines += 1
             continue
         
