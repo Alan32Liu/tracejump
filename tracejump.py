@@ -21,13 +21,30 @@ data_sections = [
 
 is64 = True
 
+# registers used by __trace_jump
+# rax, rdi, rsi, rdx
+
+# registers used by write
+# rcx, r11
 
 def trace_jump(output):
     global is64
-    if(is64):
-        output.write('\tcall\t__trace_jump\n')
-    else:
-        output.write('\tcall\t__trace_jump\n')
+    assert(is64)
+
+    output.write('.align 4\n')
+    output.write('\tpush %rax\n')
+    output.write('\tpush %rdi\n')
+    output.write('\tpush %rsi\n')
+    output.write('\tpush %rdx\n')
+    output.write('\tpush %rcx\n')
+    output.write('\tpush %r11\n')
+    output.write('\tcall\t__trace_jump\n')
+    output.write('\tpop  %r11\n')
+    output.write('\tpop  %rcx\n')
+    output.write('\tpop  %rdx\n')
+    output.write('\tpop  %rsi\n')
+    output.write('\tpop  %rdi\n')
+    output.write('\tpop  %rax\n')
 
 
 # see afl-as.c add_instrumentation

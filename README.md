@@ -27,14 +27,11 @@ Assumes ATT syntax (as output by gcc). Here is an example:
     main:
     .LFB0:
     	.cfi_startproc
+        ...
     	call	__trace_jump
+        ...
 
-The supplied `__trace_jump.o` uses the GCC primitive
-[__builtin_return_address](https://gcc.gnu.org/onlinedocs/gcc/Return-Address.html)
-to obtain the instruction pointer of the call site.
-Note that the return address already points past the call,
-so we subtract the size of the x86 binary encoding of calls
-(which is 5 = 1 byte opcode + 4 byte target address).
+The supplied `__trace_jump.s` writes the addresses of jump targets to stdout (64bit little endian)
 
 Wishlist
 
