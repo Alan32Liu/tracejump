@@ -33,6 +33,11 @@ Assumes ATT syntax (as output by gcc). Here is an example:
 
 The supplied `__trace_jump.s` writes the addresses of jump targets to stdout (64bit little endian)
 
+PoC `fuzz.py`
+
+    make test.instr
+    python fuzz.py ./test.instr ' '
+
 Wishlist
 
 - `as`, `cc`, `ld` wrappers (can instrument arbitrary builds easily as AFL does)
