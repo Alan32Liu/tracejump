@@ -143,9 +143,9 @@ def unpack(output):
 
 
 def traced_with_input(binary, input):
-    p = subprocess32.Popen(binary, stdin=subprocess32.PIPE, stdout=subprocess32.PIPE)
+    p = subprocess32.Popen(binary, stdin=subprocess32.PIPE, stderr=subprocess32.PIPE)
     (output, error) = p.communicate(input)
-    addrs = unpack(output)
+    addrs = unpack(error)
     return addrs 
 
 
@@ -167,7 +167,10 @@ def run(binary, seed):
         print('')
 
         
-if __name__ == "__main__" and len(sys.argv) > 2:
+if __name__ == "__main__" and len(sys.argv) > 1:
     binary = sys.argv[1]
-    seed = sys.argv[2]
+    args = sys.argv[2:]
+    seed = ''.join(sys.stdin.readlines())
+    print('seed')
+    print(seed)
     run(binary, seed)

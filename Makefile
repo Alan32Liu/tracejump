@@ -10,3 +10,6 @@ all: test.instr
 
 %.instr: %.instr.o __trace_jump.o
 	$(CC) -o $@ $^
+
+%.out.s: %
+	objdump -d $^ > $@
