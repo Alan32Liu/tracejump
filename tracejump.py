@@ -32,6 +32,7 @@ def trace_jump(output):
     assert(is64)
 
     output.write('.align 4\n')
+    output.write('\tsub $128,%rsp\n')
     output.write('\tpush %rax\n')
     output.write('\tpush %rdi\n')
     output.write('\tpush %rsi\n')
@@ -45,6 +46,7 @@ def trace_jump(output):
     output.write('\tpop  %rsi\n')
     output.write('\tpop  %rdi\n')
     output.write('\tpop  %rax\n')
+    output.write('\tadd $128,%rsp\n')
 
 
 # see afl-as.c add_instrumentation

@@ -7,8 +7,8 @@ import subprocess32, struct
 U = 0.5
 C = sqrt(2)
 
-samples = 1
-max_rounds = 20
+samples = 10
+max_rounds = 100
 
 total = 0
 max_iterations = 10
