@@ -36,7 +36,7 @@ The supplied `__trace_jump.s` writes the addresses of jump targets to stdout (64
 PoC `fuzz.py`
 
     make test.instr
-    python fuzz.py ./test.instr ' '
+    echo -n ' ' | python fuzz.py ./test.instr
 
 Wishlist
 
