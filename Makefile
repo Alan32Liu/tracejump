@@ -1,6 +1,6 @@
 .PHONY: all
 
-all: test.instr
+all: test.instr test.instr.s test.out.s
 
 %.s: %.c
 	$(CC) -S -o $@ $^

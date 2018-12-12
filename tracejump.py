@@ -31,7 +31,6 @@ def trace_jump(output):
     global is64
     assert(is64)
 
-    output.write('.align 4\n')
     output.write('\tsub $128,%rsp\n')
     output.write('\tpush %rax\n')
     output.write('\tpush %rdi\n')

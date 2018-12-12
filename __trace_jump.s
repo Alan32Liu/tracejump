@@ -4,7 +4,7 @@ __trace_jump:
 	push   %rbp
 	mov    %rsp,%rbp
 	mov    0x8(%rbp),%rax   # get return address
-	sub    $0x5,%rax        # rewind back over call
+	sub    $0x13,%rax        # rewind back over call
 	mov    %rax,-0x8(%rbp)  # store on stack
 	
 	mov    $0x1,%rax        # system call number 1 = write
