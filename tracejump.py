@@ -27,29 +27,30 @@ is64 = True
 # registers used by write
 # rcx, r11
 
-def trace_jump(output):
-    global is64
-    assert(is64)
 
-    output.write('\tsub $128,%rsp\n')
-    output.write('\tpush %rax\n')
-    output.write('\tpush %rdi\n')
-    output.write('\tpush %rsi\n')
-    output.write('\tpush %rdx\n')
-    output.write('\tpush %rcx\n')
-    output.write('\tpush %r11\n')
-    output.write('\tcall\t__trace_jump\n')
-    output.write('\tpop  %r11\n')
-    output.write('\tpop  %rcx\n')
-    output.write('\tpop  %rdx\n')
-    output.write('\tpop  %rsi\n')
-    output.write('\tpop  %rdi\n')
-    output.write('\tpop  %rax\n')
-    output.write('\tadd $128,%rsp\n')
+def trace_jump():
+    global is64
+    assert is64
+
+    out_asm.write('\tsub $128,%rsp\n')
+    out_asm.write('\tpush %rax\n')
+    out_asm.write('\tpush %rdi\n')
+    out_asm.write('\tpush %rsi\n')
+    out_asm.write('\tpush %rdx\n')
+    out_asm.write('\tpush %rcx\n')
+    out_asm.write('\tpush %r11\n')
+    out_asm.write('\tcall\t__trace_jump\n')
+    out_asm.write('\tpop  %r11\n')
+    out_asm.write('\tpop  %rcx\n')
+    out_asm.write('\tpop  %rdx\n')
+    out_asm.write('\tpop  %rsi\n')
+    out_asm.write('\tpop  %rdi\n')
+    out_asm.write('\tpop  %rax\n')
+    out_asm.write('\tadd $128,%rsp\n')
 
 
 # see afl-as.c add_instrumentation
-def instrument(input, output):
+def instrument():
     global code_sections, data_sections, is64
     
     ins_lines = 0
@@ -59,16 +60,16 @@ def instrument(input, output):
     skip_intel = False
     skip_app = False
     instrument_next = False
-    
-    for line in input:
+
+    for line in in_asm:
         if not skip_intel and not skip_app and not skip_csect and instr_ok and instrument_next and line[0] == '\t' and str.isalpha(line[1]):
-            trace_jump(output)
+            trace_jump()
             ins_lines += 1
             instrument_next = False
 
-        output.write(line)
-        
-        if(line[0] == '\t' and line[1] == '.'):
+        out_asm.write(line)
+
+        if line[0] == '\t' and line[1] == '.':
             if line == '\t.text\n' or line.startswith('\t.section\t.text') or line.startswith('\t.section\t__TEXT,__text') or line.startswith('\t.section __TEXT,__text'):
                 instr_ok = True
                 continue
@@ -99,7 +100,7 @@ def instrument(input, output):
         
         if line[0] == '\t':
             if line[1] == 'j' and line[2] != 'm':
-                trace_jump(output)
+                trace_jump()
                 ins_lines += 1
             continue
         
@@ -116,7 +117,6 @@ def instrument(input, output):
 
 
 if __name__ == "__main__" and len(sys.argv) > 2:
-    input = open(sys.argv[1], 'r')
-    output = open(sys.argv[2], 'w')
-    ins_lines = instrument(input, output)
-    print('instrumented ' + str(ins_lines) + ' lines')
+    in_asm = open(sys.argv[1], 'r')
+    out_asm = open(sys.argv[2], 'w')
+    print('instrumented ' + str(instrument()) + ' lines')
