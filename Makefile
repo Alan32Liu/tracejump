@@ -1,15 +1,13 @@
 .PHONY: all
 
-all: test.instr test.instr.s test.out.s
-
 %.s: %.c
 	$(CC) -S -o $@ $^
 
 %.instr.s: %.s
-	python tracejump.py $^ $@
+	./afl-as $^ $@
 
 %.instr: %.instr.o __trace_jump.o
-	$(CC) -static -o $@ $^
+	$(CC) -o $@ $^
 
 %.out.s: %
 	objdump -d $^ > $@

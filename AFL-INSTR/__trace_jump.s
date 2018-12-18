@@ -7,7 +7,8 @@ __trace_jump:
 	sub    $0x13,%rax        # rewind back over call
 	mov    %rax,-0x8(%rbp)  # store on stack
 	
-	mov    $0x1,%rax        # system call number 1 = write
+	# mov    $0x1,%rax        # system call number 1 = write
+	mov    $0x2000004,%rax     # system call number 4 = write on Mac OS X
 	mov    $0x2,%rdi        # file handle        2 = stderr
 	mov    %rbp,%rsi        # 
 	sub    $0x8,%rsi
